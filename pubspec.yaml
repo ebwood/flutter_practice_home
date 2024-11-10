@@ -87,6 +87,7 @@ flutter:
     - assets/shaders/flutter_hello4.frag
     - assets/shaders/flutter_hello_base.frag
     - assets/shaders/flutter_hello_color.frag
+    - assets/shaders/flutter_hello_shape.frag
   fonts:
     - family: AlimamaFangYuanTiVF
       fonts:

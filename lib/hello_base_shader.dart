@@ -26,7 +26,7 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
     ticker.start();
     () async {
       final program = await FragmentProgram.fromAsset(
-          'assets/shaders/flutter_hello_color.frag');
+          'assets/shaders/flutter_hello_shape.frag');
       shader = program.fragmentShader();
       setState(() {});
     }();
@@ -41,15 +41,25 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Center(
-      child: SizedBox(
-          width: size.width - 500,
-          height: size.width,
-          child: shader == null
-              ? const SizedBox.shrink()
-              : CustomPaint(
-                  painter: HelloPainter(shader!, time),
-                )),
+    return Scaffold(
+      backgroundColor: Colors.lightBlue,
+      body: Stack(
+        children: [
+          Center(
+            child: SizedBox(
+                width: size.width - 500,
+                height: size.width - 500,
+                child: shader == null
+                    ? const SizedBox.shrink()
+                    : CustomPaint(
+                        painter: HelloPainter(shader!, time),
+                      )),
+          ),
+          const Center(
+              child: Text('你好，shader',
+                  style: TextStyle(color: Colors.lightGreen))),
+        ],
+      ),
     );
   }
 }
