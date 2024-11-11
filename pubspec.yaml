@@ -88,6 +88,15 @@ flutter:
     - assets/shaders/flutter_hello_base.frag
     - assets/shaders/flutter_hello_color.frag
     - assets/shaders/flutter_hello_shape.frag
+    - assets/shaders/flutter_hello_translate.frag
+    - assets/shaders/flutter_hello_rotate.frag
+    - assets/shaders/flutter_hello_scale.frag
+    - assets/shaders/flutter_hello_pattern.frag
+    - assets/shaders/flutter_hello_offset.frag
+    - assets/shaders/flutter_hello_random.frag
+    - assets/shaders/flutter_hello_noise.frag
+    - assets/shaders/flutter_hello_fractal_brownian_motion.frag
+    - assets/shaders/lydia/flutter_hello_lygia_test.frag
   fonts:
     - family: AlimamaFangYuanTiVF
       fonts:

@@ -1,7 +1,9 @@
 import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 
 class HelloBaseShader extends StatefulWidget {
   const HelloBaseShader({super.key});
@@ -15,6 +17,7 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
   FragmentShader? shader;
   late Ticker ticker;
   double time = 0;
+  ui.Image? image;
 
   @override
   void initState() {
@@ -26,8 +29,11 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
     ticker.start();
     () async {
       final program = await FragmentProgram.fromAsset(
-          'assets/shaders/flutter_hello_shape.frag');
+          'assets/shaders/lydia/flutter_hello_lygia_test.frag');
       shader = program.fragmentShader();
+      image = await rootBundle
+          .load('assets/images/hello.webp')
+          .then((value) => decodeImageFromList(value.buffer.asUint8List()));
       setState(() {});
     }();
   }
@@ -45,19 +51,27 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
       backgroundColor: Colors.lightBlue,
       body: Stack(
         children: [
-          Center(
-            child: SizedBox(
-                width: size.width - 500,
-                height: size.width - 500,
-                child: shader == null
-                    ? const SizedBox.shrink()
-                    : CustomPaint(
-                        painter: HelloPainter(shader!, time),
-                      )),
-          ),
           const Center(
               child: Text('你好，shader',
                   style: TextStyle(color: Colors.lightGreen))),
+          Center(
+            child: SizedBox(
+                width: size.width - 100,
+                height: size.height - 100,
+                child: shader == null || image == null
+                    ? const SizedBox.shrink()
+                    : MouseRegion(
+                        onHover: (event) {
+                          setState(() {
+                            shader!.setFloat(3, event.localPosition.dx);
+                            shader!.setFloat(4, event.localPosition.dy);
+                          });
+                        },
+                        child: CustomPaint(
+                          painter: HelloPainter(shader!, time, image!),
+                        ),
+                      )),
+          ),
         ],
       ),
     );
@@ -67,14 +81,15 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
 class HelloPainter extends CustomPainter {
   final FragmentShader shader;
   final double time;
-  HelloPainter(this.shader, this.time);
+  final ui.Image image;
+  HelloPainter(this.shader, this.time, this.image);
   @override
   void paint(Canvas canvas, Size size) {
-    print('大小: $size');
     shader
       ..setFloat(0, size.width)
       ..setFloat(1, size.height)
-      ..setFloat(2, time);
+      ..setFloat(2, time)
+      ..setImageSampler(0, image);
     return canvas.drawRect(Rect.fromLTWH(.0, .0, size.width, size.height),
         Paint()..shader = shader);
   }

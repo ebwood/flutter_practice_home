@@ -45,6 +45,8 @@ class _HelloShaderState extends State<HelloShader>
         await FragmentProgram.fromAsset('assets/shaders/flutter_hello4.frag');
 
     shader = program.fragmentShader();
+    shader!.setFloat(3, 0);
+    shader!.setFloat(4, 0);
     final imageData = await rootBundle.load('assets/images/hello.webp');
     image = await decodeImageFromList(imageData.buffer.asUint8List());
     setState(() {});
