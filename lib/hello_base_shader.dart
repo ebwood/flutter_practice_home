@@ -29,7 +29,7 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
     ticker.start();
     () async {
       final program = await FragmentProgram.fromAsset(
-          'assets/shaders/lydia/flutter_hello_lygia_test.frag');
+          'assets/shaders/flutter_hello_hsb.frag');
       shader = program.fragmentShader();
       image = await rootBundle
           .load('assets/images/hello.webp')
@@ -56,8 +56,8 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
                   style: TextStyle(color: Colors.lightGreen))),
           Center(
             child: SizedBox(
-                width: size.width - 100,
-                height: size.height - 100,
+                width: size.width,
+                height: size.height,
                 child: shader == null || image == null
                     ? const SizedBox.shrink()
                     : MouseRegion(

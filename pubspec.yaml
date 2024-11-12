@@ -97,6 +97,8 @@ flutter:
     - assets/shaders/flutter_hello_noise.frag
     - assets/shaders/flutter_hello_fractal_brownian_motion.frag
     - assets/shaders/lydia/flutter_hello_lygia_test.frag
+    - assets/shaders/flutter_hello_work_color.frag
+    - assets/shaders/flutter_hello_hsb.frag
   fonts:
     - family: AlimamaFangYuanTiVF
       fonts:
