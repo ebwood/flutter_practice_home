@@ -53,22 +53,178 @@ mat2 rotate2d(float _angle) {
   return mat2(cos(_angle), -sin(_angle), sin(_angle), cos(_angle));
 }
 
-vec4 getColor(vec2 uv, vec4 fragColor) {
-  float frequency = 5.0;
-  float amplitude = 0.01;
-  float range = amplitude * 4;
+float frequency = 20.0;
+float amplitude = 0.008;
 
-  float phase = uTime * 5.0;
+float sinWave(float p, float factor) {
+  float phase = uTime * 3.0;
+  return amplitude * (1 + sin(p * frequency + factor * phase)) + amplitude * 2;
+}
+
+bool isInsideCircle(vec2 point1, vec2 point2, vec2 point3) {
+    // 计算圆心
+  vec2 center = (point1 + point2) * 0.5;
+
+    // 计算半径的平方
+  float radiusSquared = dot(point1 - center, point1 - center);
+
+    // 计算 point3 到圆心的距离平方
+  float distanceSquared = dot(point3 - center, point3 - center);
+
+    // 判断 point3 是否在圆内或圆上
+  return distanceSquared <= radiusSquared;
+}
+
+bool isOutsideLeftUpperEllipse(vec2 point1, vec2 point2, vec2 point3) {
+    // 计算椭圆中心
+  vec2 center = (point1 + point2) * 0.5;
+    // 判断是否在左上方
+    if (point3.x > )
+  bool isLeftUpperPosition = (point3.x < center.x) && (point3.y < center.y);
+
+    // 计算长轴和短轴的半径
+  float a = abs(point1.x - point2.x) * 0.5;  // 长轴半径
+  float b = abs(point1.y - point2.y) * 0.5;  // 短轴半径
+
+    // 标准化判断 point3 是否在椭圆内
+  float normalizedX = (point3.x - center.x) / a;
+  float normalizedY = (point3.y - center.y) / b;
+  bool isInsideEllipse = (normalizedX * normalizedX + normalizedY * normalizedY) <= 1.0;
+
+    // point3 在椭圆的左上方区域
+  return isInsideEllipse && isLeftUpperPosition;
+}
+
+bool isInsideLeftUpperHalf(vec2 point1, vec2 point2, vec2 point3) {
+  vec2 center = (point1 + point2) * 0.5;
+  float radiusSquared = dot(point1 - center, point1 - center);
+  float distanceSquared = dot(point3 - center, point3 - center);
+  bool isInsideCircle = distanceSquared <= radiusSquared;
+  bool isLeftUpperHalf = (point3.x < center.x) && (point3.y > center.y);
+  return isInsideCircle && isLeftUpperHalf;
+}
+
+bool isInsideRightUpperHalf(vec2 point1, vec2 point2, vec2 point3) {
+  vec2 center = (point1 + point2) * 0.5;
+  float radiusSquared = dot(point1 - center, point1 - center);
+  float distanceSquared = dot(point3 - center, point3 - center);
+  bool isInsideCircle = distanceSquared <= radiusSquared;
+  bool isRightUpperHalf = (point3.x > center.x) && (point3.y > center.y);
+  return isInsideCircle && isRightUpperHalf;
+}
+
+bool isInsideLeftLowerHalf(vec2 point1, vec2 point2, vec2 point3) {
+  vec2 center = (point1 + point2) * 0.5;
+  float radiusSquared = dot(point1 - center, point1 - center);
+  float distanceSquared = dot(point3 - center, point3 - center);
+  bool isInsideCircle = distanceSquared <= radiusSquared;
+  bool isLeftLowerHalf = (point3.x < center.x) && (point3.y < center.y);
+  return isInsideCircle && isLeftLowerHalf;
+}
+
+bool isInsideRightLowerHalf(vec2 point1, vec2 point2, vec2 point3) {
+  vec2 center = (point1 + point2) * 0.5;
+  float radiusSquared = dot(point1 - center, point1 - center);
+  float distanceSquared = dot(point3 - center, point3 - center);
+  bool isInsideCircle = distanceSquared <= radiusSquared;
+  bool isRightLowerHalf = (point3.x > center.x) && (point3.y < center.y);
+  return isInsideCircle && isRightLowerHalf;
+}
+
+bool isOutsideLeftUpperHalf(vec2 point1, vec2 point2, vec2 point3) {
+  vec2 center = (point1 + point2) * 0.5;
+  float radiusSquared = dot(point1 - center, point1 - center);
+  float distanceSquared = dot(point3 - center, point3 - center);
+  bool isOutsideCircle = distanceSquared > radiusSquared;
+  bool isLeftUpperHalf = (point3.x < center.x) && (point3.y < center.y);
+  return isOutsideCircle && isLeftUpperHalf;
+}
+
+bool isOutsideRightUpperHalf(vec2 point1, vec2 point2, vec2 point3) {
+  vec2 center = (point1 + point2) * 0.5;
+  float radiusSquared = dot(point1 - center, point1 - center);
+  float distanceSquared = dot(point3 - center, point3 - center);
+  bool isOutsideCircle = distanceSquared > radiusSquared;
+  bool isRightUpperHalf = (point3.x > center.x) && (point3.y < center.y);
+  return isOutsideCircle && isRightUpperHalf;
+}
+
+bool isOutsideLeftLowerHalf(vec2 point1, vec2 point2, vec2 point3) {
+  vec2 center = (point1 + point2) * 0.5;
+  float radiusSquared = dot(point1 - center, point1 - center);
+  float distanceSquared = dot(point3 - center, point3 - center);
+  bool isOutsideCircle = distanceSquared > radiusSquared;
+  bool isLeftLowerHalf = (point3.x < center.x) && (point3.y < center.y);
+  return isOutsideCircle && isLeftLowerHalf;
+}
+
+bool isOutsideRightLowerHalf(vec2 point1, vec2 point2, vec2 point3) {
+  vec2 center = (point1 + point2) * 0.5;
+  float radiusSquared = dot(point1 - center, point1 - center);
+  float distanceSquared = dot(point3 - center, point3 - center);
+  bool isOutsideCircle = distanceSquared > radiusSquared;
+  bool isRightLowerHalf = (point3.x > center.x) && (point3.y < center.y);
+  return isOutsideCircle && isRightLowerHalf;
+}
+
+vec4 getColor(vec2 uv, vec4 fragColor) {
+
+  vec4 transparent = vec4(0.0);
 
   uv -= vec2(0.5);
-  float sinWaveX = amplitude * (2 +  sin(uv.y * frequency + phase)) - 0.5;
-  float sineWaveY = amplitude * (2 + sin(uv.x * frequency + phase)) - 0.5;
+  float pt = -0.45;
+  float pb = 0.45;
 
-  if(uv.x < sinWaveX || uv.x > sinWaveX + 1 - range || uv.y < sineWaveY || uv.y > sineWaveY + 1 - range) {
-    return fragColor.rgba;
+  float sinWaveX = sinWave(uv.y, 1);
+  vec2 tlX = vec2(sinWave(pt, 1), pt + .5);
+  vec2 blX = vec2(sinWave(pb, 1), pb + .5);
+
+  float sinWaveX2 = sinWave(uv.y, -1);
+  vec2 trX = vec2(sinWave(pt, -1), pt + .5);
+  vec2 brX = vec2(sinWave(pb, -1), pb + .5);
+
+  float sineWaveY = sinWave(uv.x, -1);
+  vec2 tlY = vec2(pt + .5, sinWave(pt, -1));
+  vec2 blY = vec2(pt + .5, sinWave(pt, -1));
+
+  float sineWaveY2 = sinWave(uv.x, 1);
+  vec2 trY = vec2(pt + .5, sinWave(pt, 1));
+  vec2 brY = vec2(pb + .5, sinWave(pb, 1));
+
+  uv += vec2(0.5);
+  float percent1 = 1.0;
+  float percent2 = 1.0;
+
+  vec4 color = fragColor;
+  if(uv.x < sinWaveX || uv.x > 1 - sinWaveX2 || uv.y < sineWaveY || uv.y > 1 - sineWaveY2) {
   } else {
-    return vec4(0.0);
+    color = transparent;
+    if(isInLeftUpperEllipse(tlX, tlY, uv)) {
+      color = transparent;
+    }
   }
+  return color;
+
+  bool one = true;
+  if(uv.x < sinWaveX) {
+    percent1 = uv.x / sinWaveX;
+  } else if(uv.x > 1 - sinWaveX2) {
+    percent1 = (1 - uv.x) / sinWaveX2;
+  } else {
+    one = false;
+  }
+
+  bool two = true;
+  if(uv.y < sineWaveY) {
+    percent2 = uv.y / sineWaveY;
+  } else if(uv.y > 1 - sineWaveY2) {
+    percent2 = (1 - uv.y) / sineWaveY2;
+  } else {
+    two = false;
+  }
+
+  float percent = min(percent1, percent2);
+  return mix(fragColor, transparent, percent);
 }
 
 void main() {

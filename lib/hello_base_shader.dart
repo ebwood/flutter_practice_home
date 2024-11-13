@@ -48,7 +48,7 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           const Center(
