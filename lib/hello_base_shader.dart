@@ -29,7 +29,7 @@ class _HelloBaseShaderState extends State<HelloBaseShader>
     ticker.start();
     () async {
       final program = await FragmentProgram.fromAsset(
-          'assets/shaders/flutter_hello_hsb.frag');
+          'assets/shaders/flutter_hello_hsb1.frag');
       shader = program.fragmentShader();
       image = await rootBundle
           .load('assets/images/hello.webp')

@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   cupertino_icons: ^1.0.8
+  fftea: ^1.5.0+1
   flutter:
     sdk: flutter
   flutter_shaders: ^0.1.3
@@ -98,7 +99,9 @@ flutter:
     - assets/shaders/flutter_hello_fractal_brownian_motion.frag
     - assets/shaders/lydia/flutter_hello_lygia_test.frag
     - assets/shaders/flutter_hello_work_color.frag
-    - assets/shaders/flutter_hello_hsb.frag
+    # - assets/shaders/flutter_hello_hsb.frag
+    - assets/shaders/perlin.frag
+    - assets/shaders/shockwave.frag
   fonts:
     - family: AlimamaFangYuanTiVF
       fonts:
