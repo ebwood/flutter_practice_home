@@ -94,6 +94,7 @@ class _IntelligenceShaderState extends State<IntelligenceShader>
     _ticker = createTicker((elapsed) {
       double duration = (1000 / fps);
       if (elapsed.inMilliseconds - _elapsed >= duration) {
+        print('刷新: ${elapsed.inMilliseconds}');
         _elapsed = elapsed.inMilliseconds.toDouble();
         setState(() {});
       }
