@@ -103,6 +103,7 @@ flutter:
     - assets/shaders/perlin.frag
     - assets/shaders/shockwave.frag
     - assets/shaders/wave.frag
+    - assets/shaders/sin_wave.frag
   fonts:
     - family: AlimamaFangYuanTiVF
       fonts:
