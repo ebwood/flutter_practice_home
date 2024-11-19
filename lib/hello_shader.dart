@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 import 'dart:ui' as ui;
 
@@ -41,12 +43,11 @@ class _HelloShaderState extends State<HelloShader>
   }
 
   void _initShader() async {
-    final program =
-        await FragmentProgram.fromAsset('assets/shaders/flutter_hello4.frag');
+    final program = await FragmentProgram.fromAsset('assets/shaders/wave.frag');
 
     shader = program.fragmentShader();
-    shader!.setFloat(3, 0);
-    shader!.setFloat(4, 0);
+    // shader!.setFloat(3, 0);
+    // shader!.setFloat(4, 0);
     final imageData = await rootBundle.load('assets/images/hello.webp');
     image = await decodeImageFromList(imageData.buffer.asUint8List());
     setState(() {});
@@ -57,31 +58,55 @@ class _HelloShaderState extends State<HelloShader>
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Center(
-      child: SizedBox(
-        width: size.width,
-        height: size.height,
-        child: shader == null
-            ? const SizedBox.shrink()
-            : AnimatedBuilder(
-                animation: controller,
-                builder: (context, child) => MouseRegion(
-                      onHover: (event) {
-                        setState(() {
-                          mousePosition = event.position;
-                        });
-                      },
-                      child: CustomPaint(
-                          painter: HelloPainter(shader!,
-                              value: controller.value,
-                              image: image!,
-                              time: time,
-                              mousePosition: mousePosition)),
-                    )),
-      ),
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () {
+            random = Random().nextInt(5).toDouble() + 3;
+            double value = (random - 1) / 5;
+            Future.doWhile(() async {
+              await Future.delayed(const Duration(milliseconds: 200));
+              random -= value;
+              final next = random > 1.0;
+              if (!next) {
+                random = 1.0;
+              }
+              return next;
+            });
+          },
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              color: Colors.green,
+              width: size.width,
+              height: 100,
+              child: shader == null
+                  ? const SizedBox.shrink()
+                  : AnimatedBuilder(
+                      animation: controller,
+                      builder: (context, child) => MouseRegion(
+                            onHover: (event) {
+                              setState(() {
+                                mousePosition = event.position;
+                              });
+                            },
+                            child: CustomPaint(
+                                painter: HelloPainter(shader!,
+                                    value: controller.value,
+                                    image: image!,
+                                    time: time,
+                                    mousePosition: mousePosition)),
+                          )),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
+
+int count = 0;
+double random = 1.0;
 
 class HelloPainter extends CustomPainter {
   final FragmentShader shader;
@@ -96,14 +121,19 @@ class HelloPainter extends CustomPainter {
       required this.mousePosition});
   @override
   void paint(Canvas canvas, Size size) {
+    // if (count % 30 == 0) {
+    //   random = Random().nextDouble();
+    // }
+    count++;
     shader
       ..setFloat(0, size.width)
       ..setFloat(1, size.height)
       ..setFloat(2, time)
-      ..setFloat(3, mousePosition.dx)
-      ..setFloat(4, mousePosition.dy)
-      ..setFloat(5, 0.0);
-    // ..setImageSampler(0, image);
+      ..setFloat(3, random);
+    //   ..setFloat(3, mousePosition.dx)
+    //   ..setFloat(4, mousePosition.dy)
+    //   ..setFloat(5, 0.0);
+    // // ..setImageSampler(0, image);
     canvas.drawRect(
         Rect.fromLTWH(0, 0, size.width, size.height), Paint()..shader = shader);
   }

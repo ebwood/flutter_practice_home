@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const IntelligenceShader(),
-      //const ShaderTest(), //RippleEffect(),//const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: //const IntelligenceShader(),
+      const HelloShader(), //RippleEffect(),//const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

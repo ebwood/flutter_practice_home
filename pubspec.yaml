@@ -102,6 +102,7 @@ flutter:
     # - assets/shaders/flutter_hello_hsb.frag
     - assets/shaders/perlin.frag
     - assets/shaders/shockwave.frag
+    - assets/shaders/wave.frag
   fonts:
     - family: AlimamaFangYuanTiVF
       fonts:
