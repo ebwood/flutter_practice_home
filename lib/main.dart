@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/hello_base_shader.dart';
 import 'package:flutter_practice/hello_shader.dart';
-import 'package:flutter_practice/intelligence_shader.dart';
-import 'package:flutter_practice/ripple.dart';
-import 'package:flutter_practice/shader.dart';
 
-import 'click_shader.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,8 +18,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HelloShader(),
-      //const ShaderTest(), //RippleEffect(),//const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: //const IntelligenceShader(),
+      const HelloShader(), //RippleEffect(),//const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

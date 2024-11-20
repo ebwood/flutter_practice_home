@@ -41,12 +41,10 @@ class _HelloShaderState extends State<HelloShader>
 
   void _initShader() async {
     final program =
-        await FragmentProgram.fromAsset('assets/shaders/image.frag');
+        await FragmentProgram.fromAsset('assets/shaders/sin_wave.frag');
 
     shader = program.fragmentShader();
-    // shader!.setFloat(3, 0);
-    // shader!.setFloat(4, 0);
-    final imageData = await rootBundle.load('assets/images/intro.png');
+    final imageData = await rootBundle.load('assets/images/hello.webp');
     image = await decodeImageFromList(imageData.buffer.asUint8List());
     shader!.setImageSampler(0, image!);
     setState(() {});
