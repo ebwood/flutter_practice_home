@@ -26,7 +26,6 @@ class _HelloShaderState extends State<HelloShader>
         AnimationController(vsync: this, duration: const Duration(seconds: 5))
           ..repeat();
     ticker = Ticker((duration) {
-      print(duration);
       time = duration.inMilliseconds / 1000;
     });
     ticker.start();
@@ -42,13 +41,14 @@ class _HelloShaderState extends State<HelloShader>
 
   void _initShader() async {
     final program =
-        await FragmentProgram.fromAsset('assets/shaders/flutter_hello4.frag');
+        await FragmentProgram.fromAsset('assets/shaders/image.frag');
 
     shader = program.fragmentShader();
-    shader!.setFloat(3, 0);
-    shader!.setFloat(4, 0);
-    final imageData = await rootBundle.load('assets/images/hello.webp');
+    // shader!.setFloat(3, 0);
+    // shader!.setFloat(4, 0);
+    final imageData = await rootBundle.load('assets/images/intro.png');
     image = await decodeImageFromList(imageData.buffer.asUint8List());
+    shader!.setImageSampler(0, image!);
     setState(() {});
   }
 
@@ -99,10 +99,10 @@ class HelloPainter extends CustomPainter {
     shader
       ..setFloat(0, size.width)
       ..setFloat(1, size.height)
-      ..setFloat(2, time)
-      ..setFloat(3, mousePosition.dx)
-      ..setFloat(4, mousePosition.dy)
-      ..setFloat(5, 0.0);
+      ..setFloat(2, time);
+    // ..setFloat(3, mousePosition.dx)
+    // ..setFloat(4, mousePosition.dy)
+    // ..setFloat(5, 0.0);
     // ..setImageSampler(0, image);
     canvas.drawRect(
         Rect.fromLTWH(0, 0, size.width, size.height), Paint()..shader = shader);
