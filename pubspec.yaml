@@ -107,6 +107,7 @@ flutter:
 
     - assets/shaders/wave.frag
     - assets/shaders/sin_wave.frag
+    - assets/shaders/my_wave.frag
   fonts:
     - family: AlimamaFangYuanTiVF
       fonts:

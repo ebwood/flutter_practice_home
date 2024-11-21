@@ -23,8 +23,7 @@ class _HelloShaderState extends State<HelloShader>
   void initState() {
     super.initState();
     controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5))
-          ..repeat();
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     ticker = Ticker((duration) {
       time = duration.inMilliseconds / 1000;
     });
@@ -41,12 +40,12 @@ class _HelloShaderState extends State<HelloShader>
 
   void _initShader() async {
     final program =
-        await FragmentProgram.fromAsset('assets/shaders/sin_wave.frag');
+        await FragmentProgram.fromAsset('assets/shaders/my_wave.frag');
 
     shader = program.fragmentShader();
     final imageData = await rootBundle.load('assets/images/hello.webp');
     image = await decodeImageFromList(imageData.buffer.asUint8List());
-    shader!.setImageSampler(0, image!);
+    // shader!.setImageSampler(0, image!);
     setState(() {});
   }
 
@@ -63,10 +62,11 @@ class _HelloShaderState extends State<HelloShader>
             ? const SizedBox.shrink()
             : AnimatedBuilder(
                 animation: controller,
-                builder: (context, child) => MouseRegion(
-                      onHover: (event) {
+                builder: (context, child) => GestureDetector(
+                      onTapDown: (event) {
                         setState(() {
-                          mousePosition = event.position;
+                          mousePosition = event.globalPosition;
+                          controller.forward(from: .0);
                         });
                       },
                       child: CustomPaint(
@@ -97,7 +97,10 @@ class HelloPainter extends CustomPainter {
     shader
       ..setFloat(0, size.width)
       ..setFloat(1, size.height)
-      ..setFloat(2, time);
+      ..setFloat(2, time)
+      ..setFloat(3, value)
+      ..setFloat(4, mousePosition.dx)
+      ..setFloat(5, mousePosition.dy);
     // ..setFloat(3, mousePosition.dx)
     // ..setFloat(4, mousePosition.dy)
     // ..setFloat(5, 0.0);
