@@ -23,7 +23,8 @@ class _HelloShaderState extends State<HelloShader>
   void initState() {
     super.initState();
     controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+        AnimationController(vsync: this, duration: const Duration(seconds: 1))
+          ..repeat();
     ticker = Ticker((duration) {
       time = duration.inMilliseconds / 1000;
     });

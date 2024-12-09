@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_practice/dep.dart';
+import 'package:flutter_practice/four_dot.dart';
 import 'package:flutter_practice/hello_shader.dart';
-
+import 'package:flutter_practice/pop_test.dart';
+import 'package:flutter_practice/sleek_glowing_animation.dart';
 
 void main() {
+  configDI();
   runApp(const MyApp());
 }
 
@@ -12,15 +16,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: //const IntelligenceShader(),
-      const HelloShader(), //RippleEffect(),//const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home:
+            PopTestPage() //const FourDotWidget() //SleekGlowingAnimationWidget() //const IntelligenceShader(),
+        //const HelloShader(), //RippleEffect(),//const MyHomePage(title: 'Flutter Demo Home Page'),
+        );
   }
 }
 
